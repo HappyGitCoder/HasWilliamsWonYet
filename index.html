@@ -1,221 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Has Williams Won Yet??</title>
-    <style>
-        /* General reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Has Williams Won Yet?</title>
+  <style>
+    body {
+      margin: 0;
+      background: #121212;
+      background-image: url('WilliamsF1car.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-            overflow: hidden;
-            background-image: url('WilliamsF1car.png'); /* Local background image */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            animation: fadeInBackground 1s ease-out forwards; /* Fade-in background animation */
-        }
+    .carousel-container {
+      width: 400px;
+      height: 500px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      padding: 20px;
+      box-sizing: border-box;
+    }
 
-        /* Main container */
-        #content {
-            background-color: rgba(0, 0, 0, 0.7); /* Dark background for contrast */
-            padding: 40px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 600px;
-            transform: translateY(30px);
-            animation: slideUp 0.3s ease-out forwards, fadeInContent 0.5s ease-out forwards; /* Content slide-up and fade-in animations */
-        }
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
+    }
 
-        /* Header */
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            color: #ffffff;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            animation: slideInRight 0.5s ease-out forwards; /* Slide-in from the right */
-        }
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
 
-        /* Result (Yes/No) */
-        #result {
-            font-size: 4rem;
-            font-weight: bold;
-            margin: 30px 0;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Glowing effect */
-            animation: slideInRight 0.7s ease-out forwards; /* Slide-in from the right with delay */
-        }
+    .slide.out-left {
+      transform: translateX(-100%);
+    }
 
-        /* Yes/No colors */
-        .yes {
-            color: #28a745; /* Williams F1 green */
-        }
+    h1 {
+      font-size: 3.5rem;
+      color: white;
+      text-align: center;
+      text-shadow: 0 0 6px black;
+    }
 
-        .no {
-            color: #dc3545; /* Williams F1 red */
-        }
+    p {
+      color: white;
+      text-align: center;
+      text-shadow: 0 0 6px black;
+    }
 
-        /* Time passed section */
-        #timePassed {
-            font-size: 2rem;
-            color: #ccc; /* Soft gray instead of yellow */
-            font-weight: bold;
-            margin-top: 20px;
-            animation: slideInRight 1s ease-out forwards; /* Slide-in from the right with delay */
-        }
+    .controls {
+      width: 400px;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
 
-        /* Last win date section */
-        #lastWinDate {
-            font-size: 1.2rem;
-            color: #b0b0b0; /* Light gray for last win date */
-            margin-top: 10px;
-            animation: slideInRight 1.3s ease-out forwards; /* Slide-in from the right with delay */
-        }
+    .btn {
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid white;
+      border-radius: 10px;
+      padding: 10px 16px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
 
-        /* Background logo effect */
-        .background-logo {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 150px;
-            height: auto;
-            opacity: 0.1;
-            animation: fadeInLogo 3s ease-out forwards; /* Fade-in effect on logo */
-        }
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
 
-        /* Animation for background fade-in */
-        @keyframes fadeInBackground {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
+    #result {
+      font-size: 4rem;
+      font-weight: bold;
+      margin: 30px 0;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      text-align: center;
+      color: #dc3545;
+    }
 
-        /* Slide-up animation for the content */
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        /* Slide-in from the right animation */
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        /* Fade-in effect on the logo */
-        @keyframes fadeInLogo {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 0.1;
-            }
-        }
-    </style>
+  </style>
 </head>
 <body>
-    <!-- Optional background logo for Williams F1 (for illustrative purposes) -->
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Logo_Williams_F1.png/317px-Logo_Williams_F1.png" alt="Williams F1 Logo" class="background-logo">
 
-    <div id="content">
-        <h1>Has Williams Won Yet?</h1>
-        <div id="answer">
-            <h2 id="result" class="no">No</h2>
-        </div>
-
-        <!-- Time counter showing time since last win -->
-        <div id="timePassed">Time since last win: 0y 0d 0h 0m 0s</div>
-        <div id="lastWinDate">Last win on: May 13, 2012</div>
+  <div class="carousel-container">
+    <div class="slide active">
+      <h1>HAS WILLIAMS WON YET?</h1>
+      <div>
+        <h2 id="result" class="no">No</h2>
+      </div>
+      <p>Time since last win</p>
+      <p id="timer"></p>
     </div>
+    <div class="slide">
+      <h1>Last Victory</h1>
+      <p>Williams last won at the 2012 Spanisn Grand Prix (Circuit de Catalunya).</p>
+      <p>Driver: Pastor Maldonado</p>
+      <img src="SpainGP_transparent.png"
+        alt="Spanisn Track Layout" 
+        style="width: 100%; margin-top: 15px; border-radius: 10px;" />
+    </div>
+    
+  </div>
 
-    <script>
-        // Williams' last win date: May 13, 2012
-        const lastWinDate = new Date('2012-05-13T00:00:00'); // Specific time set to midnight
+  <div class="controls">
+    <button class="btn" id="nextBtn">Next</button>
+  </div>
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const nextBtn = document.getElementById('nextBtn');
+    let current = 0;
+  
+    function showSlide(index) {
+  slides.forEach((slide, i) => {
+    slide.classList.remove('active', 'out-left', 'out-right');
+    slide.style.transform = 'translateX(100%)';
+    slide.style.opacity = '0';
+    slide.style.pointerEvents = 'none';
+  });
 
-        let hasWilliamsWon = false; // Change this to true when Williams wins
-        let lastWinTime = lastWinDate; // Set to Williams' last win time
+  // Animate current slide out
+  if (current !== index) {
+    const direction = index > current ? '-100%' : '100%';
+    slides[current].style.transform = `translateX(${direction})`;
+    slides[current].style.opacity = '0';
+  }
 
-        // Update the page dynamically
-        window.onload = () => {
-            updatePage();
-        };
+  // Animate next slide in
+  slides[index].style.transform = 'translateX(0)';
+  slides[index].style.opacity = '1';
+  slides[index].style.pointerEvents = 'auto';
+  slides[index].classList.add('active');
 
-        // Update the page with the current result
-        function updatePage() {
-            const resultElement = document.getElementById("result");
-            const timeElement = document.getElementById("timePassed");
-            const lastWinDateElement = document.getElementById("lastWinDate");
+  current = index;
+  updateButtonText();
+}
 
-            // Change the result based on whether Williams has won
-            if (hasWilliamsWon) {
-                resultElement.textContent = "Yes!";
-                resultElement.classList.remove("no");
-                resultElement.classList.add("yes"); // Apply the 'yes' style
-            } else {
-                resultElement.textContent = "No";
-                resultElement.classList.remove("yes");
-                resultElement.classList.add("no"); // Apply the 'no' style
-            }
+  
+    function updateButtonText() {
+      if (current === 0) {
+        nextBtn.textContent = "When was that?";
+      } else if (current === 1) {
+        nextBtn.textContent = "Have they won yet though?";
+      }
+    }
+  
+    nextBtn.addEventListener('click', () => {
+      const next = (current + 1) % slides.length;
+      showSlide(next);
+    });
+  
+    function updateTimer() {
+      const lastWinDate = new Date("2012-05-13T14:00:00Z"); // Corrected to 2012
+      const now = new Date();
+      const diff = now - lastWinDate;
+  
+      const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+      const days = Math.floor((diff / (1000 * 60 * 60 * 24)) % 365.25);
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+  
+      const timerText = `${years} years, ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+      document.getElementById('timer').textContent = timerText;
+    }
+  
+    setInterval(updateTimer, 1000);
+    updateTimer();
+    updateButtonText(); // Initialize button text on load
+  </script>
+  
 
-            // Display the time passed since the last win if available
-            if (lastWinTime) {
-                updateTimeSinceLastWin();
-            }
-
-            // Display the last win date
-            lastWinDateElement.textContent = `Last win on: ${lastWinDate.toLocaleDateString()}`;
-        }
-
-        // Update the time since last win
-        function updateTimeSinceLastWin() {
-            const currentTime = new Date();
-            const timeDifference = currentTime - lastWinTime; // Time in milliseconds
-
-            // Calculate the difference in years, days, hours, minutes, and seconds
-            const years = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 365));
-            const days = Math.floor((timeDifference % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-            const timeElement = document.getElementById("timePassed");
-            timeElement.textContent = `Time since last win: ${years}y ${days}d ${hours}h ${minutes}m ${seconds}s`;
-        }
-
-        // Update the time every second
-        setInterval(() => {
-            if (!hasWilliamsWon) {
-                updateTimeSinceLastWin(); // Update time if Williams has not won
-            }
-        }, 1000); // Update every second
-    </script>
 </body>
 </html>
